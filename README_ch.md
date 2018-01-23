@@ -1,4 +1,4 @@
-# esp
+# esp python2.7
 - 让Excel,MySQL和pandas的数据可以快速相互转换
 - 主要通过pandas对数据进行处理和可视化
 - 适合因为各种因素,必须要有excel格式的数据,但是使用pandas和数据库可以大幅提高工作效率的情况
@@ -132,5 +132,22 @@ kind_name : string default u'合作方式'
 分类的依据,应为产品信息表中的列名
 data_name : string default u'产品'
 每个小表的名字在产品信息表中的列名
+
+## 如何使用
+
+```
+import MyProduct as mp
+path='example/data.xlsx'
+login="mysql+mysqldb://user:password@hostname/databasename?charset=utf8"
+#excel_to_frame
+data,info=mp.excel_to_frame(path=path)
+#sql_to_frame
+data,info=mp.sql_to_frame(login=login)
+#frame_to_sql
+mp.frame_to_sql(data=data,info=info,login=login)
+#sql_to_excel
+mp.sql_to_excel(login=login,path=path)
+```
+
 
 
