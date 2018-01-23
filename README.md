@@ -1,0 +1,152 @@
+# esp python2.7
+- transform excel/sql/pandas to each other and analyze product data or similar
+- sometimes you must use excel, but you like pandas and sql more, use esp
+
+### excel layout 
+1. sheet names  
+'info','cat1','cat2'...
+2. datas  
+![](./jpg/120180123155746.png)  
+*index can't be string, use date or int*  
+3. info  
+![](./jpg/220180123160111.png)  
+### sql安排
+所有数据在同一个database中  
+有一个名为'产品信息'(可自定义命名)的信息汇总表  
+其余为每个品种的数据表  
+### pandas数据
+1. product_data  
+key为string,value为pandas.DataFrame的dict
+2. product_panel  
+pandas的面板数据,三维分别是产品名,日期和指标
+3. product_data_multi  
+pandas的多重索引DataFrame,index是指标和日期,columns是产品名
+4. product_information  
+包含'产品信息'(可自定义命名)的pandas.DataFrame
+## 主要函数
+### MyProduct.excel_to_frame(path,sheets,header,index_col,pruduct_name_col,data_breaks,header_info,index_col_info,sheet_info)  
+返回值(两个):  
+product_data,是一个key是string,value是pandas.DataFrame的dict  
+product_info,是一个pandas.DataFrame  
+必要参数:  
+path : string  
+需要导入的excel文件路径  
+可选参数:  
+sheets : [string,string,...]  
+指定需要读取的sheet名,默认为所有sheet除掉产品信息表  
+header : int default 1  
+数据表的数据部分表头所在行(columns所在的那一行),这里及以下都是从0开始数数的  
+index_col : int default 2  
+数据表的数据部分第一个index所在的列  
+pruduct_name_col : int default 0  
+数据表的产品名列所在的列  
+data_breaks : int default 1  
+数据表的数据部分的每个小表格的间隔列  
+header_info : int default 0  
+产品信息表的表头所在行  
+index_col_info : int default 0  
+产品信息表的index所在的列  
+sheet_info : string default u'产品信息'  
+产品信息表的名字  
+
+### MyProduct.sql_to_frame(login,sheet_info,index_name)
+返回值(两个):  
+product_data,是一个key是string,value是pandas.DataFrame的dict  
+product_info,是一个pandas.DataFrame  
+必要参数:  
+login: string  
+sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+可选参数:  
+sheet_info : string default u'产品信息'  
+产品信息表的名字  
+index_name : string default u'日期'  
+index的名字  
+
+### MyProduct.frame_to_sql(data,info,login,sheet_info)
+返回值:无,仅将product_data和product_information导入sql,已有的table则覆盖
+必要参数:  
+data : dict  
+是一个key是string,value是pandas.DataFrame的dict,一般由excel_to_frame或者sql_to_frame生成  
+info : pandas.DataFrame  
+产品信息的pandas.DataFrame,一般由excel_to_frame或者sql_to_frame生成  
+login: string  
+sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+可选参数:  
+sheet_info : string default u'产品信息'  
+产品信息表的名字  
+
+### MyProduct.sql_to_excel(login,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
+返回值:无,仅将sql中的数据表和产品信息表导入excel,已有则覆盖  
+必要参数:  
+login: string  
+sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+path : string  
+需要导入的excel文件路径  
+可选参数:  
+header : int default 1  
+数据表的数据部分表头所在行(columns所在的那一行),这里及以下都是从0开始数数的  
+index_col : int default 2  
+数据表的数据部分第一个index所在的列  
+pruduct_name_col : int default 0  
+数据表的产品名列所在的列  
+sheet_info : string default u'产品信息'  
+产品信息表的名字  
+kind_name : string default u'合作方式'  
+分类的依据,应为产品信息表中的列名  
+data_name : string default u'产品'  
+每个小表的名字在产品信息表中的列名  
+
+## 内部函数
+### sql_to_frame1(login,sheet_info)  
+与sql_to_frame的区别在于不指定某列为index,少了index_name参数  
+返回值(两个):  
+product_data,是一个key是string,value是pandas.DataFrame的dict  
+product_info,是一个pandas.DataFrame  
+必要参数:  
+login: string  
+sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+可选参数:  
+sheet_info : string default u'产品信息'  
+产品信息表的名字  
+
+### frame1_to_excel(data,info,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
+返回值:无,仅将product_data和product_information导入excel,已有则覆盖  
+必要参数:  
+data : dict  
+是一个key是string,value是pandas.DataFrame的dict,一般由excel_to_frame或者sql_to_frame生成  
+info : pandas.DataFrame  
+产品信息的pandas.DataFrame,一般由excel_to_frame或者sql_to_frame生成  
+path : string  
+需要导入的excel文件路径  
+可选参数   
+header : int default 1  
+数据表的数据部分表头所在行(columns所在的那一行),这里及以下都是从0开始数数的  
+index_col : int default 2  
+数据表的数据部分第一个index所在的列  
+pruduct_name_col : int default 0  
+数据表的产品名列所在的列  
+sheet_info : string default u'产品信息'  
+产品信息表的名字
+kind_name : string default u'合作方式'
+分类的依据,应为产品信息表中的列名
+data_name : string default u'产品'
+每个小表的名字在产品信息表中的列名
+
+## how to use
+
+```
+import MyProduct as mp
+path='example/data.xlsx'
+login="mysql+mysqldb://user:password@hostname/databasename?charset=utf8"
+#excel_to_frame
+data,info=mp.excel_to_frame(path=path)
+#sql_to_frame
+data,info=mp.sql_to_frame(login=login)
+#frame_to_sql
+mp.frame_to_sql(data=data,info=info,login=login)
+#sql_to_excel
+mp.sql_to_excel(login=login,path=path)
+```
+
+
+
