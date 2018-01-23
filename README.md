@@ -10,128 +10,128 @@
 *index can't be string, use date or int*  
 3. info  
 ![](./jpg/220180123160111.png)  
-### sql安排
-所有数据在同一个database中  
-有一个名为'产品信息'(可自定义命名)的信息汇总表  
-其余为每个品种的数据表  
-### pandas数据
+### sql layout
+all data in one database  
+one table name 'info'(can rename)  
+others are tables for each kind  
+### pandas data
 1. product_data  
-key为string,value为pandas.DataFrame的dict
+dict which key is string and value is pandas.DataFrame
 2. product_panel  
-pandas的面板数据,三维分别是产品名,日期和指标
+pandas.panel,index are name,date and index
 3. product_data_multi  
-pandas的多重索引DataFrame,index是指标和日期,columns是产品名
+pandas's multi-DataFrame,index is index and data,columns is name
 4. product_information  
-包含'产品信息'(可自定义命名)的pandas.DataFrame
-## 主要函数
+pandas.DataFrame including 'info' (can rename)
+## Main functions
 ### MyProduct.excel_to_frame(path,sheets,header,index_col,pruduct_name_col,data_breaks,header_info,index_col_info,sheet_info)  
-返回值(两个):  
-product_data,是一个key是string,value是pandas.DataFrame的dict  
-product_info,是一个pandas.DataFrame  
-必要参数:  
+returns(2):  
+dict which key is string and value is pandas.DataFrame  
+pandas.DataFrame including 'info' (can rename)  
+must parameter:  
 path : string  
-需要导入的excel文件路径  
-可选参数:  
+excel path  
+optional parameter:  
 sheets : [string,string,...]  
-指定需要读取的sheet名,默认为所有sheet除掉产品信息表  
+names of sheets need read, default all sheets except info sheet  
 header : int default 1  
-数据表的数据部分表头所在行(columns所在的那一行),这里及以下都是从0开始数数的  
+header of data, count form 0  
 index_col : int default 2  
-数据表的数据部分第一个index所在的列  
+first index column of data  
 pruduct_name_col : int default 0  
-数据表的产品名列所在的列  
+column of name of data  
 data_breaks : int default 1  
-数据表的数据部分的每个小表格的间隔列  
+the separate columns in data  
 header_info : int default 0  
-产品信息表的表头所在行  
+header of info  
 index_col_info : int default 0  
-产品信息表的index所在的列  
-sheet_info : string default u'产品信息'  
-产品信息表的名字  
+column of index of info  
+sheet_info : string default u'info'  
+name of info sheet  
 
 ### MyProduct.sql_to_frame(login,sheet_info,index_name)
-返回值(两个):  
-product_data,是一个key是string,value是pandas.DataFrame的dict  
-product_info,是一个pandas.DataFrame  
-必要参数:  
+returns(2):  
+dict which key is string and value is pandas.DataFrame  
+pandas.DataFrame including 'info' (can rename)  
+must parameter:  
 login: string  
-sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
-可选参数:  
-sheet_info : string default u'产品信息'  
-产品信息表的名字  
-index_name : string default u'日期'  
-index的名字  
+sql login string. such as"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+optional parameter:  
+sheet_info : string default u'info'  
+name of info sheet  
+index_name : string default u'date'  
+name of index  
 
-### MyProduct.frame_to_sql(data,info,login,sheet_info)
-返回值:无,仅将product_data和product_information导入sql,已有的table则覆盖
-必要参数:  
+### MyProduct.frame_to_sql(data,info,login,sheet_info)  
+returns:None,only import product_data and product_information to sql, cover the original one  
+must parameter:  
 data : dict  
-是一个key是string,value是pandas.DataFrame的dict,一般由excel_to_frame或者sql_to_frame生成  
+dict which key is string and value is pandas.DataFrame, often comes form excel_to_frame or sql_to_frame  
 info : pandas.DataFrame  
-产品信息的pandas.DataFrame,一般由excel_to_frame或者sql_to_frame生成  
+pandas.DataFrame of info, often comes form excel_to_frame or sql_to_frame  
 login: string  
-sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
-可选参数:  
-sheet_info : string default u'产品信息'  
-产品信息表的名字  
+sql login string. such as"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+optional parameter:  
+sheet_info : string default u'info'  
+name of info sheet  
 
 ### MyProduct.sql_to_excel(login,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
-返回值:无,仅将sql中的数据表和产品信息表导入excel,已有则覆盖  
-必要参数:  
+returns:None,only import data and info of sql to excel, cover the original one  
+must parameter:  
 login: string  
-sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+sql login string. such as"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
 path : string  
-需要导入的excel文件路径  
-可选参数:  
+excel path  
+optional parameter:  
 header : int default 1  
-数据表的数据部分表头所在行(columns所在的那一行),这里及以下都是从0开始数数的  
+header of data, count form 0  
 index_col : int default 2  
-数据表的数据部分第一个index所在的列  
+first index column of data  
 pruduct_name_col : int default 0  
-数据表的产品名列所在的列  
-sheet_info : string default u'产品信息'  
-产品信息表的名字  
-kind_name : string default u'合作方式'  
-分类的依据,应为产品信息表中的列名  
-data_name : string default u'产品'  
-每个小表的名字在产品信息表中的列名  
+column of name of data  
+sheet_info : string default u'info'  
+name of info sheet  
+kind_name : string default u'cat'  
+the cats name in info sheet  
+data_name : string default u'name'  
+the name of every data in info sheet  
 
-## 内部函数
+## Inner function
 ### sql_to_frame1(login,sheet_info)  
-与sql_to_frame的区别在于不指定某列为index,少了index_name参数  
-返回值(两个):  
-product_data,是一个key是string,value是pandas.DataFrame的dict  
-product_info,是一个pandas.DataFrame  
-必要参数:  
+the difference from sql_to_frame is not let one column as the index, and loss the index_name parameter  
+returns(2):  
+dict which key is string and value is pandas.DataFrame  
+pandas.DataFrame including 'info' (can rename)  
+must parameter:  
 login: string  
-sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
-可选参数:  
-sheet_info : string default u'产品信息'  
-产品信息表的名字  
+sql login string. such as"mysql+mysqldb://user:password@hostname/databasename?charset=utf8"  
+optional parameter:  
+sheet_info : string default u'info'  
+name of info sheet  
 
 ### frame1_to_excel(data,info,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
-返回值:无,仅将product_data和product_information导入excel,已有则覆盖  
-必要参数:  
+returns:None,only import product_data and product_information to excel, cover the original one  
+must parameter:  
 data : dict  
-是一个key是string,value是pandas.DataFrame的dict,一般由excel_to_frame或者sql_to_frame生成  
+dict which key is string and value is pandas.DataFrame, often comes form excel_to_frame or sql_to_frame  
 info : pandas.DataFrame  
-产品信息的pandas.DataFrame,一般由excel_to_frame或者sql_to_frame生成  
+pandas.DataFrame of info, often comes form excel_to_frame or sql_to_frame  
 path : string  
-需要导入的excel文件路径  
-可选参数   
+excel path  
+optional parameter   
 header : int default 1  
-数据表的数据部分表头所在行(columns所在的那一行),这里及以下都是从0开始数数的  
+header of data, count form 0 
 index_col : int default 2  
-数据表的数据部分第一个index所在的列  
+first index column of data  
 pruduct_name_col : int default 0  
-数据表的产品名列所在的列  
-sheet_info : string default u'产品信息'  
-产品信息表的名字
-kind_name : string default u'合作方式'
-分类的依据,应为产品信息表中的列名
-data_name : string default u'产品'
-每个小表的名字在产品信息表中的列名
-
+column of name of data  
+sheet_info : string default u'info'  
+name of info sheet
+kind_name : string default u'cat'  
+the cats name in info sheet
+data_name : string default u'name'  
+the name of every data in info sheet  
+  
 ## how to use
 
 ```
