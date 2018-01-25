@@ -10,6 +10,19 @@
 *index can't be string, use date or int*  
 3. info  
 ![](./jpg/220180123160111.png)  
+
+### excel layout (another)
+1. sheet names 
+'info','data'
+2. data
+![](./jpg/2.png)  
+3. info (the same)
+4. how to use  
+use excel1_to-frame  
+and  
+frame_to_excel1
+look at the function's code to know more  
+
 ### sql layout
 all data in one database  
 one table name 'info'(can rename)  
@@ -24,7 +37,7 @@ pandas's multi-DataFrame,index is index and data,columns is name
 4. product_information  
 pandas.DataFrame including 'info' (can rename)
 ## Main functions
-### MyProduct.excel_to_frame(path,sheets,header,index_col,pruduct_name_col,data_breaks,header_info,index_col_info,sheet_info)  
+### esp.excel_to_frame(path,sheets,header,index_col,pruduct_name_col,data_breaks,header_info,index_col_info,sheet_info)  
 returns(2):  
 dict which key is string and value is pandas.DataFrame  
 pandas.DataFrame including 'info' (can rename)  
@@ -49,7 +62,7 @@ column of index of info
 sheet_info : string default u'info'  
 name of info sheet  
 
-### MyProduct.sql_to_frame(login,sheet_info,index_name)
+### esp.sql_to_frame(login,sheet_info,index_name)
 returns(2):  
 dict which key is string and value is pandas.DataFrame  
 pandas.DataFrame including 'info' (can rename)  
@@ -62,7 +75,7 @@ name of info sheet
 index_name : string default u'date'  
 name of index  
 
-### MyProduct.frame_to_sql(data,info,login,sheet_info)  
+### esp.frame_to_sql(data,info,login,sheet_info)  
 returns:None,only import product_data and product_information to sql, cover the original one  
 must parameter:  
 data : dict  
@@ -75,7 +88,7 @@ optional parameter:
 sheet_info : string default u'info'  
 name of info sheet  
 
-### MyProduct.sql_to_excel(login,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
+### esp.sql_to_excel(login,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
 returns:None,only import data and info of sql to excel, cover the original one  
 must parameter:  
 login: string  
@@ -135,7 +148,7 @@ the name of every data in info sheet
 ## how to use
 
 ```
-import MyProduct as mp
+import esp as mp
 path='example/data.xlsx'
 login="mysql+mysqldb://user:password@hostname/databasename?charset=utf8"
 #excel_to_frame

@@ -25,6 +25,35 @@ def excel_to_frame(path,sheets=[],header=1,index_col=2,pruduct_name_col=0,data_b
     product_info=pd.read_excel(path,sheet_name=sheet_info,header=header_info,index_col=index_col_info)
     return product_data,product_info
 
+def excel1_to_frame(path,sheet_info=u'info',sheet_data=u'data',index_name=u'date',data_name=u'name'):
+    import pandas as pd
+    info=pd.read_excel(path,sheet_name=sheet_info,index_col=0)
+    info_name=info[data_name]
+    data_sheet=pd.read_excel(path,sheet_name=sheet_data,header=0,index_col=[0,1])
+    data_name=data_sheet.unstack().index.tolist()
+    data={}
+    for x in info_name:
+        frame=data_sheet.loc[x].unstack().unstack()
+        frame.index.names=[index_name]
+        frame.columns.names=[None]
+        data[x]=frame
+    return data,info
+
+def frame_to_excel1(data,info,path,sheet_info=u'info',sheet_data=u'data',index_name=u'index',data_name=u'name'):
+    import pandas as pd
+    panel=pd.Panel(data)
+    data_multi=panel.to_frame(filter_observations=False)
+    col_name=data_multi.index.names[0]
+    data_multi.index.names=[col_name,index_name]
+    data_multi.columns.names=[data_name]
+    data_multi=data_multi.unstack(col_name).stack(data_name,dropna=False).swaplevel(data_name,index_name).sort_index()
+    data_multi.columns.names=[None]
+    data_writer = pd.ExcelWriter(path)
+    info.to_excel(data_writer,sheet_info)
+    data_multi.to_excel(data_writer,sheet_data)
+    data_writer.save()
+    return None
+
 def sql_to_frame(login,sheet_info=u'info',index_name=u'date'):
     import pandas as pd
     import numpy as np
