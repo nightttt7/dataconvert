@@ -28,18 +28,18 @@ def excel_to_frame(path,sheets=[],header=1,index_col=2,pruduct_name_col=0,data_b
 def excel1_to_frame(path,sheet_info=u'产品信息',sheet_data=u'数据',index_name=u'日期',data_name=u'产品'):
     import pandas as pd
     info=pd.read_excel(path,sheet_name=sheet_info,index_col=0)
-    info_name=info[u'产品']
+    info_name=info[data_name]
     data_sheet=pd.read_excel(path,sheet_name=sheet_data,header=0,index_col=[0,1])
     data_name=data_sheet.unstack().index.tolist()
     data={}
     for x in info_name:
         frame=data_sheet.loc[x].unstack().unstack()
-        frame.index.names=[u'日期']
+        frame.index.names=[index_name]
         frame.columns.names=[None]
         data[x]=frame
     return data,info
 
-def frame1_to_excel(data,info,path,sheet_info=u'产品信息',sheet_data=u'数据',index_name=u'指标',data_name=u'产品'):
+def frame_to_excel1(data,info,path,sheet_info=u'产品信息',sheet_data=u'数据',index_name=u'指标',data_name=u'产品'):
     import pandas as pd
     panel=pd.Panel(data)
     data_multi=panel.to_frame(filter_observations=False)

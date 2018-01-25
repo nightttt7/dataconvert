@@ -12,10 +12,25 @@
 *index不能为字符串,推荐日期或整数*  
 3. 产品信息表  
 ![](./jpg/82ecfcfd71bb4e8788c2fa1978840166.jpg)  
+
+### Excel表格的另一种格式
+1. sheet名  
+'产品信息','数据'
+2. 产品数据表  
+![](./jpg/1.png)  
+3. 产品信息表 同上
+4. 使用方式  
+使用excel1_to-frame  
+和  
+frame_to_excel1
+详情查看相应函数代码
+
 ### sql安排
 所有数据在同一个database中  
 有一个名为'产品信息'(可自定义命名)的信息汇总表  
 其余为每个品种的数据表  
+
+
 ### pandas数据
 1. product_data  
 key为string,value为pandas.DataFrame的dict
@@ -26,7 +41,7 @@ pandas的多重索引DataFrame,index是指标和日期,columns是产品名
 4. product_information  
 包含'产品信息'(可自定义命名)的pandas.DataFrame
 ## 主要函数
-### MyProduct.excel_to_frame(path,sheets,header,index_col,pruduct_name_col,data_breaks,header_info,index_col_info,sheet_info)  
+### esp.excel_to_frame(path,sheets,header,index_col,pruduct_name_col,data_breaks,header_info,index_col_info,sheet_info)  
 返回值(两个):  
 product_data,是一个key是string,value是pandas.DataFrame的dict  
 product_info,是一个pandas.DataFrame  
@@ -51,7 +66,7 @@ index_col_info : int default 0
 sheet_info : string default u'产品信息'  
 产品信息表的名字  
 
-### MyProduct.sql_to_frame(login,sheet_info,index_name)
+### esp.sql_to_frame(login,sheet_info,index_name)
 返回值(两个):  
 product_data,是一个key是string,value是pandas.DataFrame的dict  
 product_info,是一个pandas.DataFrame  
@@ -64,7 +79,7 @@ sheet_info : string default u'产品信息'
 index_name : string default u'日期'  
 index的名字  
 
-### MyProduct.frame_to_sql(data,info,login,sheet_info)
+### esp.frame_to_sql(data,info,login,sheet_info)
 返回值:无,仅将product_data和product_information导入sql,已有的table则覆盖
 必要参数:  
 data : dict  
@@ -77,7 +92,7 @@ sql的登录信息,形如"mysql+mysqldb://user:password@hostname/databasename?ch
 sheet_info : string default u'产品信息'  
 产品信息表的名字  
 
-### MyProduct.sql_to_excel(login,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
+### esp.sql_to_excel(login,path,header,index_col,pruduct_name_col,sheet_info,kind_name,data_name)
 返回值:无,仅将sql中的数据表和产品信息表导入excel,已有则覆盖  
 必要参数:  
 login: string  
@@ -137,7 +152,7 @@ data_name : string default u'产品'
 ## 如何使用
 
 ```
-import MyProduct as mp
+import esp as mp
 path='example/data.xlsx'
 login="mysql+mysqldb://user:password@hostname/databasename?charset=utf8"
 #excel_to_frame
