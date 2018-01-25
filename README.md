@@ -20,7 +20,7 @@
 4. how to use  
 use excel1_to-frame  
 and  
-frame_to_excel1
+frame_to_excel1  
 look at the function's code to know more  
 
 ### sql layout
