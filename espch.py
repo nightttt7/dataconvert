@@ -39,6 +39,21 @@ def excel1_to_frame(path,sheet_info=u'产品信息',sheet_data=u'数据',index_n
         data[x]=frame
     return data,info
 
+def frame1_to_excel(data,info,path,sheet_info=u'产品信息',sheet_data=u'数据',index_name=u'指标',data_name=u'产品'):
+    import pandas as pd
+    panel=pd.Panel(data)
+    data_multi=panel.to_frame(filter_observations=False)
+    col_name=data_multi.index.names[0]
+    data_multi.index.names=[col_name,index_name]
+    data_multi.columns.names=[data_name]
+    data_multi=data_multi.unstack(col_name).stack(data_name,dropna=False).swaplevel(data_name,index_name).sort_index()
+    data_multi.columns.names=[None]
+    data_writer = pd.ExcelWriter(path)
+    info.to_excel(data_writer,sheet_info)
+    data_multi.to_excel(data_writer,sheet_data)
+    data_writer.save()
+    return None
+
 def sql_to_frame(login,sheet_info=u'产品信息',index_name=u'日期'):
     import pandas as pd
     import numpy as np
