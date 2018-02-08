@@ -5,12 +5,12 @@
 - 适合因为各种因素,必须要有excel格式的数据,但是使用pandas和数据库可以大幅提高工作效率的情况
 
 ### 所有函数
-excel_to_frame
-sql_to_frame
-frame_to_sql
-sql_to_excel
-excel1_to_frame  
-frame_to_excel1
+excel_to_frame  
+sql_to_frame  
+frame_to_sql  
+sql_to_excel  
+excel1_to_frame    
+frame_to_excel1  
 
 
 ### 需要使用固定格式的Excel表格,格式如下
