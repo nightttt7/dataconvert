@@ -1,3 +1,5 @@
+# todo: complete the english readme and correct grammatical/spelling errors.
+
 # esp python2.7
 - transform excel/sql/pandas to each other and analyze product data or similar
 - sometimes you must use excel, but you like pandas and sql more, use esp
