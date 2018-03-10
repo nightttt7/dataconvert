@@ -161,7 +161,7 @@ data_name : string default u'产品'
 ## 如何使用
 
 ```
-import esp as mp
+import espch as mp
 path='example/data.xlsx'
 login="mysql+mysqldb://user:password@hostname/databasename?charset=utf8"
 #excel_to_frame
